@@ -5,13 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d4f5fcf0-d985-4502-9ccb-5cf12f564839" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app" beforeDir="false" afterPath="$PROJECT_DIR$/app" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/mvnw" beforeDir="false" afterPath="$PROJECT_DIR$/app/mvnw" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DatabaseLocalColorSettings">
+    <colors>
+      <entry key="5d980999-1511-4dab-acf0-1a60b3a29890" value="" />
+    </colors>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/app" />
@@ -22,6 +29,65 @@
         <option name="mavenHomeTypeForPersistence" value="WRAPPER" />
       </MavenGeneralSettings>
     </option>
+  </component>
+  <component name="NextEditCompletionFeaturesState">
+    <decayedCancelled>
+      <entry key="MS100" value="1.0000000000000002" />
+      <entry key="MS500" value="1.000783013169562" />
+      <entry key="S2" value="1.2233889616766984" />
+      <entry key="S5" value="1.947653191007368" />
+      <entry key="S10" value="2.918494771526906" />
+      <entry key="S30" value="5.03489137560588" />
+      <entry key="S60" value="7.220050276484849" />
+      <entry key="M2" value="10.983416317041359" />
+      <entry key="M5" value="16.66976821387401" />
+      <entry key="M10" value="19.82592516643395" />
+      <entry key="M15" value="21.088410471709825" />
+      <entry key="M30" value="22.475276039872924" />
+      <entry key="H1" value="23.219505209784195" />
+      <entry key="H2" value="23.605101432045224" />
+      <entry key="H4" value="23.80137282420551" />
+      <entry key="D1" value="23.966730576358625" />
+      <entry key="W1" value="23.99524316992222" />
+    </decayedCancelled>
+    <decayedSelected>
+      <entry key="MS100" value="3.8496774786739994E-101" />
+      <entry key="MS500" value="8.262071382813216E-21" />
+      <entry key="S2" value="1.0074469070595417E-5" />
+      <entry key="S5" value="0.013592974737779165" />
+      <entry key="S10" value="0.18110398407543365" />
+      <entry key="S30" value="1.1983840388480322" />
+      <entry key="S60" value="2.2439552547759036" />
+      <entry key="M2" value="3.5624109853233783" />
+      <entry key="M5" value="5.178701973092839" />
+      <entry key="M10" value="5.987931921232072" />
+      <entry key="M15" value="6.300129136232713" />
+      <entry key="M30" value="6.636754378789273" />
+      <entry key="H1" value="6.814904816273773" />
+      <entry key="H2" value="6.9065654940683885" />
+      <entry key="H4" value="6.953058619524901" />
+      <entry key="D1" value="6.992145101953541" />
+      <entry key="W1" value="6.998877101630161" />
+    </decayedSelected>
+    <decayedShown>
+      <entry key="MS100" value="4.185571902537815E-8" />
+      <entry key="MS500" value="0.034026220260889015" />
+      <entry key="S2" value="0.6330230601254575" />
+      <entry key="S5" value="1.6349599187277153" />
+      <entry key="S10" value="2.87544052331746" />
+      <entry key="S30" value="6.072227394437641" />
+      <entry key="S60" value="9.340492902023346" />
+      <entry key="M2" value="14.456856940001819" />
+      <entry key="M5" value="21.799359861012274" />
+      <entry key="M10" value="25.785878751634716" />
+      <entry key="M15" value="27.36900269207436" />
+      <entry key="M30" value="29.10178372617384" />
+      <entry key="H1" value="30.029159871077304" />
+      <entry key="H2" value="30.50900919154674" />
+      <entry key="H4" value="30.753094289639748" />
+      <entry key="D1" value="30.95865165779989" />
+      <entry key="W1" value="30.994088240038604" />
+    </decayedShown>
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 4,
@@ -45,13 +111,19 @@
     "codeWithMe.voiceChat.enabledByDefault": "false",
     "git-widget-placeholder": "main",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/samue/ToDo",
+    "last_opened_file_path": "C:/Users/samue/ToDo/app/src/main/resources",
     "nodejs_package_manager_path": "npm",
     "settings.editor.selected.configurable": "debugger.hotswap"
+  },
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "h2"
+    ]
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\samue\ToDo\app\src\main\resources" />
       <recent name="C:\Users\samue\ToDo\.idea" />
     </key>
   </component>
