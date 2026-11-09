@@ -45,7 +45,7 @@ public class TasksView extends MasterDetailLayout {
 
         // Layout view
         setSizeFull();
-        setDetailSize("300px");
+        setDetailSize("400px");
         setExpandMaster(true);
 
         var listLayout = new VerticalLayout(new H1("Tasks"), searchField, grid);
