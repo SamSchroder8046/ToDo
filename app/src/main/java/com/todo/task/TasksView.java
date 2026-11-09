@@ -2,7 +2,9 @@ package com.todo.task;
 
 import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.masterdetaillayout.MasterDetailLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
@@ -15,7 +17,7 @@ import java.time.format.DateTimeFormatter;
 @PageTitle("Tasks")
 @Route("")
 @RouteAlias("/tasks")
-public class TasksView extends VerticalLayout {
+public class TasksView extends MasterDetailLayout {
     TasksView(TaskItemRepository repository) {
 
         // Create components
@@ -37,12 +39,20 @@ public class TasksView extends VerticalLayout {
         grid.addColumn(task -> task.timestampCreated() != null ? task.timestampCreated().format(formatter) : "").setHeader("Created").setSortProperty(TaskItem.SORT_PROPERTY_TIMESTAMP_CREATED);
         grid.setItemsPageable(pageable -> repository.findByDescriptionContainingIgnoreCase(searchField.getValue(), pageable).getContent());
 
+        var drawer = new TaskDrawer();
+
         searchField.addValueChangeListener(e -> grid.getDataProvider().refreshAll());
 
         // Layout view
         setSizeFull();
+        setDetailSize("300px");
+        setExpandMaster(true);
+
+        var listLayout = new VerticalLayout(new H1("Tasks"), searchField, grid);
+        listLayout.setSizeFull();
         grid.setSizeFull();
-        add(searchField);
-        add(grid);
+
+        setMaster(listLayout);
+        setDetail(drawer);
     }
 }
