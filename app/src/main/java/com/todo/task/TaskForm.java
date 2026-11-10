@@ -7,6 +7,8 @@ import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 
+import java.util.Optional;
+
 public class TaskForm extends Composite<FormLayout> {
 
     private final Binder<TaskDetails> binder;
@@ -26,10 +28,21 @@ public class TaskForm extends Composite<FormLayout> {
         binder = new Binder<>();
         binder.forField(descriptionField).bind(TaskDetails::getDescription, TaskDetails::setDescription);
         binder.forField(dueField).bind(TaskDetails::getDatetimeDue, TaskDetails::setDatetimeDue);
-        binder.setReadOnly(true);
+//        binder.setReadOnly(true);
     }
 
     public void setFormDataObject(@Nullable TaskDetails taskDetails) {
         binder.setBean(taskDetails);
+    }
+
+    public Optional<TaskDetails> getFormDataObject() {
+        if (binder.getBean() == null) {
+            throw new IllegalStateException("No form data object");
+        }
+        if (binder.validate().isOk()) {
+            return Optional.of(binder.getBean());
+        } else {
+            return Optional.empty();
+        }
     }
 }
