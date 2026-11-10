@@ -2,7 +2,9 @@ package com.todo.task;
 
 import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.masterdetaillayout.MasterDetailLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
@@ -12,11 +14,11 @@ import com.vaadin.flow.router.RouteAlias;
 
 import java.time.format.DateTimeFormatter;
 
-@PageTitle("Tasks")
 @Route("")
 @RouteAlias("/tasks")
-public class TasksView extends VerticalLayout {
-    TasksView(TaskItemRepository repository) {
+@PageTitle("Tasks")
+public class TasksView extends MasterDetailLayout {
+    TasksView(TaskItemRepository repository, TaskDetailsRepository taskDetailsRepository) {
 
         // Create components
         var searchField = new TextField();
@@ -37,12 +39,28 @@ public class TasksView extends VerticalLayout {
         grid.addColumn(task -> task.timestampCreated() != null ? task.timestampCreated().format(formatter) : "").setHeader("Created").setSortProperty(TaskItem.SORT_PROPERTY_TIMESTAMP_CREATED);
         grid.setItemsPageable(pageable -> repository.findByDescriptionContainingIgnoreCase(searchField.getValue(), pageable).getContent());
 
+        var drawer = new TaskDrawer();
+
         searchField.addValueChangeListener(e -> grid.getDataProvider().refreshAll());
+
+        grid.addSelectionListener(e -> {
+            var taskDetails = e.getFirstSelectedItem().flatMap(item -> taskDetailsRepository.findById(item.taskId()));
+            taskDetails.ifPresent(drawer::setTaskDetails);
+            setDetail(taskDetails.isPresent() ? drawer : null);
+        });
+        addBackdropClickListener(e -> grid.deselectAll());
+        addDetailEscapePressListener(e -> grid.deselectAll());
 
         // Layout view
         setSizeFull();
+        setDetailSize("400px");
+        setExpandMaster(true);
+
+        var listLayout = new VerticalLayout(new H1("Tasks"), searchField, grid);
+        listLayout.setSizeFull();
         grid.setSizeFull();
-        add(searchField);
-        add(grid);
+
+        setMaster(listLayout);
+        setDetail(null);
     }
 }
