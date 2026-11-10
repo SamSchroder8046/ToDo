@@ -18,7 +18,7 @@ import java.time.format.DateTimeFormatter;
 @RouteAlias("/tasks")
 @PageTitle("Tasks")
 public class TasksView extends MasterDetailLayout {
-    TasksView(TaskItemRepository repository, TaskDetailsRepository taskDetailsRepository) {
+    TasksView(TaskService service) {
 
         // Create components
         var searchField = new TextField();
@@ -37,14 +37,18 @@ public class TasksView extends MasterDetailLayout {
         }).setHeader("Complete").setSortProperty(TaskItem.SORT_PROPERTY_COMPLETE);
         grid.addColumn(task -> task.timestampDue() != null ? task.timestampDue().format(formatter) : "No deadline").setHeader("Due").setSortProperty(TaskItem.SORT_PROPERTY_TIMESTAMP_DUE);
         grid.addColumn(task -> task.timestampCreated() != null ? task.timestampCreated().format(formatter) : "").setHeader("Created").setSortProperty(TaskItem.SORT_PROPERTY_TIMESTAMP_CREATED);
-        grid.setItemsPageable(pageable -> repository.findByDescriptionContainingIgnoreCase(searchField.getValue(), pageable).getContent());
+        grid.setItemsPageable(pageable -> service.findItems(searchField.getValue(), pageable));
 
-        var drawer = new TaskDrawer();
+        var drawer = new TaskDrawer(taskDetails -> {
+            var saved = service.save(taskDetails);
+            grid.getDataProvider().refreshAll();
+            return saved;
+        });
 
         searchField.addValueChangeListener(e -> grid.getDataProvider().refreshAll());
 
         grid.addSelectionListener(e -> {
-            var taskDetails = e.getFirstSelectedItem().flatMap(item -> taskDetailsRepository.findById(item.taskId()));
+            var taskDetails = e.getFirstSelectedItem().flatMap(item -> service.findDetailsById(item.taskId()));
             taskDetails.ifPresent(drawer::setTaskDetails);
             setDetail(taskDetails.isPresent() ? drawer : null);
         });
