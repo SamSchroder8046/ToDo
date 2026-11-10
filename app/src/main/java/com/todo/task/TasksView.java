@@ -61,6 +61,6 @@ public class TasksView extends MasterDetailLayout {
         grid.setSizeFull();
 
         setMaster(listLayout);
-        setDetail(drawer);
+        setDetail(null);
     }
 }
