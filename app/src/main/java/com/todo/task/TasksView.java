@@ -14,11 +14,11 @@ import com.vaadin.flow.router.RouteAlias;
 
 import java.time.format.DateTimeFormatter;
 
-@PageTitle("Tasks")
 @Route("")
 @RouteAlias("/tasks")
+@PageTitle("Tasks")
 public class TasksView extends MasterDetailLayout {
-    TasksView(TaskItemRepository repository) {
+    TasksView(TaskItemRepository repository, TaskDetailsRepository taskDetailsRepository) {
 
         // Create components
         var searchField = new TextField();
@@ -42,6 +42,14 @@ public class TasksView extends MasterDetailLayout {
         var drawer = new TaskDrawer();
 
         searchField.addValueChangeListener(e -> grid.getDataProvider().refreshAll());
+
+        grid.addSelectionListener(e -> {
+            var taskDetails = e.getFirstSelectedItem().flatMap(item -> taskDetailsRepository.findById(item.taskId()));
+            taskDetails.ifPresent(drawer::setTaskDetails);
+            setDetail(taskDetails.isPresent() ? drawer : null);
+        });
+        addBackdropClickListener(e -> grid.deselectAll());
+        addDetailEscapePressListener(e -> grid.deselectAll());
 
         // Layout view
         setSizeFull();

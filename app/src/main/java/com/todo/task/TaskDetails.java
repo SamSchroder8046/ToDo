@@ -1,6 +1,6 @@
 package com.todo.task;
 
-import com.vaadin.flow.component.template.Id;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Version;
 import org.springframework.data.relational.core.mapping.Table;
 
