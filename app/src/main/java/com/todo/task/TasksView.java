@@ -42,7 +42,12 @@ public class TasksView extends MasterDetailLayout {
         var drawer = new TaskDrawer(taskDetails -> {
             var saved = service.save(taskDetails);
             grid.getDataProvider().refreshAll();
+            setDetail(null);
+            grid.deselectAll();
             return saved;
+        }, () -> {
+            setDetail(null);
+            return null;
         });
 
         searchField.addValueChangeListener(e -> grid.getDataProvider().refreshAll());
