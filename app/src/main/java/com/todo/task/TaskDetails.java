@@ -1,5 +1,9 @@
 package com.todo.task;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PastOrPresent;
+import jakarta.validation.constraints.Size;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Version;
 import org.springframework.data.relational.core.mapping.Table;
@@ -16,7 +20,9 @@ public class TaskDetails {
     private Long taskId;
     @Version
     private Long version;
+    @NotBlank @Size(max = 500)
     private String description;
+    @PastOrPresent
     private OffsetDateTime timestampCreated;
     private OffsetDateTime timestampDue;
     private boolean complete;
