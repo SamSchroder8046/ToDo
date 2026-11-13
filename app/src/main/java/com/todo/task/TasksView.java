@@ -5,12 +5,15 @@ import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.masterdetaillayout.MasterDetailLayout;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
+import org.springframework.dao.OptimisticLockingFailureException;
 
 import java.time.format.DateTimeFormatter;
 
@@ -45,7 +48,8 @@ public class TasksView extends MasterDetailLayout {
             setDetail(null);
             grid.deselectAll();
             return saved;
-        }, () -> {
+        }, this::handleException,
+                () -> {
             setDetail(null);
             return null;
         });
@@ -71,5 +75,18 @@ public class TasksView extends MasterDetailLayout {
 
         setMaster(listLayout);
         setDetail(null);
+    }
+
+    private void handleException(RuntimeException exception) {
+        if (exception instanceof OptimisticLockingFailureException) {
+            var notification = new Notification("Another user has edited the same product. "
+            + "Please refresh and try again.");
+            notification.setPosition(Notification.Position.MIDDLE);
+            notification.addThemeVariants(NotificationVariant.WARNING);
+            notification.setDuration(3000);
+            notification.open();
+        } else {
+            throw exception;
+        }
     }
 }

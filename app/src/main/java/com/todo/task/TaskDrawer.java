@@ -16,12 +16,19 @@ public class TaskDrawer extends Composite<VerticalLayout> {
         TaskDetails save(TaskDetails taskDetails);
     }
 
+    @FunctionalInterface
+    interface ErrorCallback {
+        void handleException(RuntimeException e);
+    }
+
     private final SaveCallback saveCallback;
+    private final ErrorCallback errorCallback;
     private final Callable backFunc;
     private final TaskForm form;
 
-    TaskDrawer(SaveCallback saveCallback, Callable backFunc) {
+    TaskDrawer(SaveCallback saveCallback, ErrorCallback errorCallback, Callable backFunc) {
         this.saveCallback = saveCallback;
+        this.errorCallback = errorCallback;
         this.backFunc = backFunc;
 
         var header = new H2("Task Details");
@@ -52,8 +59,12 @@ public class TaskDrawer extends Composite<VerticalLayout> {
 
     private void save() {
         form.getFormDataObject().ifPresent(taskDetails -> {
-            var saved = saveCallback.save(taskDetails);
-            form.setFormDataObject(saved);
+            try {
+                var saved = saveCallback.save(taskDetails);
+                form.setFormDataObject(saved);
+            } catch (RuntimeException e) {
+                errorCallback.handleException(e);
+            }
         });
     }
 
