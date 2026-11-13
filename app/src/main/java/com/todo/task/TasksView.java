@@ -37,7 +37,7 @@ public class TasksView extends MasterDetailLayout {
         }).setHeader("Complete").setSortProperty(TaskItem.SORT_PROPERTY_COMPLETE);
         grid.addColumn(task -> task.timestampDue() != null ? task.timestampDue().format(formatter) : "No deadline").setHeader("Due").setSortProperty(TaskItem.SORT_PROPERTY_TIMESTAMP_DUE);
         grid.addColumn(task -> task.timestampCreated() != null ? task.timestampCreated().format(formatter) : "").setHeader("Created").setSortProperty(TaskItem.SORT_PROPERTY_TIMESTAMP_CREATED);
-        grid.setItemsPageable(pageable -> service.findItems(searchField.getValue(), pageable));
+        grid.setItemsPageable(pageable -> service.findItems(searchField.getValue(), pageable)).setIdentifierProvider(TaskItem::taskId);
 
         var drawer = new TaskDrawer(taskDetails -> {
             var saved = service.save(taskDetails);
