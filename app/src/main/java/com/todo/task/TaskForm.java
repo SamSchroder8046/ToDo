@@ -16,6 +16,7 @@ public class TaskForm extends Composite<FormLayout> {
     TaskForm () {
         // Create components
         var descriptionField = new TextField("Task");
+        descriptionField.setMaxLength(500);
         var dueField = new DateTimePicker();
         dueField.setLabel("Task Due");
 
@@ -26,8 +27,8 @@ public class TaskForm extends Composite<FormLayout> {
 
         // Bind fields
         binder = new Binder<>();
-        binder.forField(descriptionField).bind(TaskDetails::getDescription, TaskDetails::setDescription);
-        binder.forField(dueField).bind(TaskDetails::getDatetimeDue, TaskDetails::setDatetimeDue);
+        binder.forField(descriptionField).asRequired("Enter task").bind(TaskDetails::getDescription, TaskDetails::setDescription);
+        binder.forField(dueField).asRequired("Enter date and time when the task is due").bind(TaskDetails::getDatetimeDue, TaskDetails::setDatetimeDue);
 //        binder.setReadOnly(true);
     }
 
