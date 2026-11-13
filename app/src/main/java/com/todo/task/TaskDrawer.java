@@ -2,8 +2,11 @@ package com.todo.task;
 
 import com.vaadin.flow.component.Composite;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.confirmdialog.ConfirmDialog;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.Scroller;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 
@@ -17,17 +20,25 @@ public class TaskDrawer extends Composite<VerticalLayout> {
     }
 
     @FunctionalInterface
+    interface DeleteCallback {
+        void delete(TaskDetails taskDetails);
+    }
+
+    @FunctionalInterface
     interface ErrorCallback {
         void handleException(RuntimeException e);
     }
 
     private final SaveCallback saveCallback;
+    private final DeleteCallback deleteCallback;
     private final ErrorCallback errorCallback;
     private final Callable backFunc;
     private final TaskForm form;
+    private TaskDetails taskDetails;
 
-    TaskDrawer(SaveCallback saveCallback, ErrorCallback errorCallback, Callable backFunc) {
+    TaskDrawer(SaveCallback saveCallback, DeleteCallback deleteCallback, ErrorCallback errorCallback, Callable backFunc) {
         this.saveCallback = saveCallback;
+        this.deleteCallback = deleteCallback;
         this.errorCallback = errorCallback;
         this.backFunc = backFunc;
 
@@ -35,6 +46,9 @@ public class TaskDrawer extends Composite<VerticalLayout> {
         form = new TaskForm();
 
         var saveButton = new Button("Save", e -> save());
+        var deleteButton = new Button("Delete", e -> delete());
+        deleteButton.addThemeVariants(ButtonVariant.ERROR);
+
         var backButton = new Button("",e -> {
             try {
                 this.backFunc.call();
@@ -49,11 +63,12 @@ public class TaskDrawer extends Composite<VerticalLayout> {
         layout.add(backButton);
         layout.add(header);
         layout.add(new Scroller(form));
-        layout.add(saveButton);
+        layout.add(new HorizontalLayout(saveButton, deleteButton));
         layout.setHeightFull();
     }
 
     public void setTaskDetails(TaskDetails taskDetails) {
+        this.taskDetails = taskDetails;
         form.setFormDataObject(taskDetails);
     }
 
@@ -61,11 +76,28 @@ public class TaskDrawer extends Composite<VerticalLayout> {
         form.getFormDataObject().ifPresent(taskDetails -> {
             try {
                 var saved = saveCallback.save(taskDetails);
-                form.setFormDataObject(saved);
+                setTaskDetails(saved);
             } catch (RuntimeException e) {
                 errorCallback.handleException(e);
             }
         });
+    }
+
+    private void delete() {
+        var dialog = new ConfirmDialog();
+        dialog.setHeader("Delete Product");
+        dialog.setText("Are you sure you want to permanently delete this product?");
+        dialog.setCancelable(true);
+        dialog.setConfirmText("Delete");
+        dialog.setConfirmButtonTheme("error primary");
+        dialog.addConfirmListener(event -> {
+            try {
+                deleteCallback.delete(taskDetails);
+            } catch (RuntimeException e) {
+                errorCallback.handleException(e);
+            }
+        });
+        dialog.open();
     }
 
 }

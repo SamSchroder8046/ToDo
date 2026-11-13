@@ -34,4 +34,9 @@ public class TaskService {
     public TaskDetails save(@Valid TaskDetails taskDetails) {
         return taskDetailsRepository.save(taskDetails);
     }
+
+    @Transactional
+    public void delete(TaskDetails taskDetails) {
+        taskDetailsRepository.delete(taskDetails);
+    }
 }

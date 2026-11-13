@@ -1,6 +1,8 @@
 package com.todo.task;
 
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.checkbox.Checkbox;
+import com.vaadin.flow.component.details.Details;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.icon.VaadinIcon;
@@ -48,7 +50,12 @@ public class TasksView extends MasterDetailLayout {
             setDetail(null);
             grid.deselectAll();
             return saved;
-        }, this::handleException,
+        }, taskDetails -> {
+            service.delete(taskDetails);
+            grid.deselectAll();
+            grid.getDataProvider().refreshAll();
+        },
+                this::handleException,
                 () -> {
             setDetail(null);
             return null;
