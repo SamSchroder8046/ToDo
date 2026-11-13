@@ -2,7 +2,6 @@ package com.todo.task;
 
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.checkbox.Checkbox;
-import com.vaadin.flow.component.details.Details;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.icon.VaadinIcon;
@@ -23,6 +22,9 @@ import java.time.format.DateTimeFormatter;
 @RouteAlias("/tasks")
 @PageTitle("Tasks")
 public class TasksView extends MasterDetailLayout {
+
+    public static final int MOBILE_BREAKPOINT = 600;
+
     TasksView(TaskService service) {
 
         // Create components
@@ -73,7 +75,7 @@ public class TasksView extends MasterDetailLayout {
 
         // Layout view
         setSizeFull();
-        setDetailSize("400px");
+        UI.getCurrentOrThrow().getPage().retrieveExtendedClientDetails(details -> handleScreenWidth(details.getScreenWidth()));
         setExpandMaster(true);
 
         var listLayout = new VerticalLayout(new H1("Tasks"), searchField, grid);
@@ -95,5 +97,9 @@ public class TasksView extends MasterDetailLayout {
         } else {
             throw exception;
         }
+    }
+
+    private void handleScreenWidth(int screenWidth) {
+        setDetailSize(screenWidth <= TasksView.MOBILE_BREAKPOINT ? String.valueOf(screenWidth) + "px" : "400px");
     }
 }

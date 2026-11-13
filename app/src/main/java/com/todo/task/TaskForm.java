@@ -2,6 +2,7 @@ package com.todo.task;
 
 import com.vaadin.copilot.shaded.checkerframework.checker.nullness.qual.Nullable;
 import com.vaadin.flow.component.Composite;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.datetimepicker.DateTimePicker;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -19,6 +20,10 @@ public class TaskForm extends Composite<FormLayout> {
         descriptionField.setMaxLength(500);
         var dueField = new DateTimePicker();
         dueField.setLabel("Task Due");
+        UI.getCurrentOrThrow().getPage().retrieveExtendedClientDetails(details -> {
+            int screenWidth = details.getScreenWidth();
+            handleScreenWidth(screenWidth, descriptionField, dueField);
+        });
 
         // Layout form
         var layout = getContent();
@@ -44,6 +49,14 @@ public class TaskForm extends Composite<FormLayout> {
             return Optional.of(binder.getBean());
         } else {
             return Optional.empty();
+        }
+    }
+
+    private void handleScreenWidth(int screenWidth, TextField descriptionField, DateTimePicker dueField) {
+        if (screenWidth <= TasksView.MOBILE_BREAKPOINT) {
+            float componentWidth = (float) screenWidth * 0.8f;
+            descriptionField.setMaxWidth(componentWidth + "px");
+            dueField.setMaxWidth(componentWidth + "px");
         }
     }
 }
